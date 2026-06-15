@@ -1,24 +1,377 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <title>Blog da Isadora</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notícias da Isadora</title>
+  <style>
+    :root {
+      --bg: #07111f;
+      --panel: #101c2d;
+      --panel-2: #162536;
+      --text: #edf4ff;
+      --muted: #bfd3f2;
+      --accent: #7c9cff;
+      --accent-2: #a66cff;
+      --border: rgba(255, 255, 255, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top, rgba(124, 156, 255, 0.14), transparent 28%),
+        linear-gradient(135deg, #050b14 0%, #0c1726 45%, #111c2d 100%);
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .page-shell {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    header {
+      background: linear-gradient(135deg, rgba(12, 20, 35, 0.95), rgba(20, 33, 53, 0.95));
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: 0 18px 40px rgba(7, 11, 20, 0.45);
+      overflow: hidden;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #dfe8ff;
+    }
+
+    .brand-badge {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: grid;
+      place-items: center;
+      font-size: 1rem;
+    }
+
+    nav ul {
+      display: flex;
+      gap: 10px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      padding: 10px 12px;
+      border-radius: 999px;
+      color: var(--muted);
+      transition: background 0.2s, color 0.2s;
+    }
+
+    nav a:hover {
+      background: rgba(124, 156, 255, 0.12);
+      color: var(--text);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 18px;
+      padding: 24px;
+    }
+
+    .hero-card, .mini-card {
+      background: rgba(15, 25, 40, 0.88);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 18px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(124, 156, 255, 0.12);
+      color: #dce6ff;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(2rem, 5vw, 3rem);
+      line-height: 1.1;
+    }
+
+    .lead {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 620px;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .chip {
+      border: 1px solid rgba(124, 156, 255, 0.25);
+      background: rgba(124, 156, 255, 0.08);
+      border-radius: 999px;
+      padding: 8px 10px;
+      color: #dce6ff;
+      font-size: 0.95rem;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .stat-box {
+      background: linear-gradient(180deg, rgba(19, 31, 49, 0.98), rgba(12, 21, 35, 0.98));
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 12px;
+    }
+
+    .stat-box strong { display: block; font-size: 1.2rem; }
+
+    .mini-card h2, .content h2 {
+      margin-top: 0;
+      margin-bottom: 8px;
+      font-size: 1.06rem;
+    }
+
+    .mini-card p, .content p { color: var(--muted); }
+
+    main {
+      display: grid;
+      grid-template-columns: 1.4fr 0.8fr;
+      gap: 18px;
+      margin-top: 18px;
+      align-items: start;
+    }
+
+    .content, .sidebar {
+      display: grid;
+      gap: 16px;
+    }
+
+    .post-card, .sidebar-card {
+      background: rgba(11, 20, 33, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 16px;
+      box-shadow: 0 12px 30px rgba(5, 10, 18, 0.35);
+    }
+
+    .post-card h3 {
+      margin: 0 0 6px;
+      font-size: 1.25rem;
+    }
+
+    .meta {
+      color: #a7b9d8;
+      font-size: 0.95rem;
+      margin-bottom: 8px;
+    }
+
+    .post-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .thumb {
+      width: 100%;
+      height: 140px;
+      border-radius: 14px;
+      object-fit: cover;
+      margin-bottom: 10px;
+      border: 1px solid var(--border);
+      background: linear-gradient(135deg, rgba(124, 156, 255, 0.15), rgba(166, 108, 255, 0.12));
+    }
+
+    .read-more {
+      display: inline-block;
+      margin-top: 6px;
+      color: #dce7ff;
+      font-weight: 600;
+    }
+
+    .sidebar-card ul {
+      margin: 8px 0 0 18px;
+      color: var(--muted);
+    }
+
+    footer {
+      margin-top: 18px;
+      padding: 16px 4px 26px;
+      color: #b7c7e3;
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 980px) {
+      .hero, main { grid-template-columns: 1fr; }
+      .post-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .page-shell { padding: 12px; }
+      .topbar { padding: 14px; }
+      .hero { padding: 14px; }
+      .stats { grid-template-columns: 1fr; }
+      nav ul { gap: 6px; }
+      nav a { padding: 8px 10px; font-size: 0.95rem; }
+    }
+  </style>
 </head>
 <body>
+  <div class="page-shell">
+    <header>
+      <div class="topbar">
+        <div class="brand">
+          <span class="brand-badge">✦</span>
+          Notícias da Isadora
+        </div>
+        <nav>
+          <ul>
+            <li><a href="#inicio">Início</a></li>
+            <li><a href="#posts">Posts</a></li>
+            <li><a href="#sobre">Sobre</a></li>
+            <li><a href="#contato">Contato</a></li>
+          </ul>
+        </nav>
+      </div>
 
-    <h1>Notícias da Isadora</h1>
+      <section class="hero" id="inicio">
+        <article class="hero-card">
+          <span class="eyebrow">Tecnologia • Ciência • Inovação</span>
+          <h1>Um blog moderno para acompanhar as novidades do mundo digital.</h1>
+          <p class="lead">Aqui você encontra notícias curtas, ideias inspiradoras e uma apresentação visual mais profissional para o seu projeto.</p>
+          <div class="chip-row">
+            <span class="chip">IA generativa</span>
+            <span class="chip">Cibersegurança</span>
+            <span class="chip">Robótica</span>
+            <span class="chip">Ciência</span>
+          </div>
+        </article>
 
-    <p>Compartilho notícias atuais sobre tecnologia, ciência e acontecimentos do mundo.</p>
+        <aside class="mini-card" id="sobre">
+          <h2>Sobre esta página</h2>
+          <p>O layout foi pensado para ficar claro, elegante e responsivo, com cores tecnológicas e uma leitura mais confortável para o usuário.</p>
+          <div class="stats">
+            <div class="stat-box"><strong>4</strong> posts principais</div>
+            <div class="stat-box"><strong>100%</strong> responsivo</div>
+            <div class="stat-box"><strong>HTML5</strong> moderno</div>
+            <div class="stat-box"><strong>CSS</strong> visual</div>
+          </div>
+        </aside>
+      </section>
+    </header>
 
-    <h2>Inteligência Artificial em Destaque</h2>
+    <main>
+      <section class="content" id="posts">
+        <article class="post-card">
+          <h2>Postagens em destaque</h2>
+          <p>Escolha um tema para acompanhar o que está acontecendo nas áreas de tecnologia, inteligência artificial e inovação.</p>
+        </article>
 
-    <p>Por: Isadora</p>
+        <article class="post-card">
+          <h3>Como usar a IA para criar e melhorar seu blog</h3>
+          <p class="meta">Por Isadora • 15 de junho de 2026</p>
+          <p>Você já começou a criar seu blog, talvez até tenha a estrutura básica em HTML, mas ele ainda parece simples? A inteligência artificial pode ser sua grande aliada para melhorar o visual, organizar a estrutura e gerar conteúdo novo.</p>
+          <p><strong>4 formas práticas de usar prompts:</strong></p>
+          <ul>
+            <li><strong>CSS moderno:</strong> peça cores tecnológicas, fontes bonitas e alinhamento mais confortável.</li>
+            <li><strong>Estrutura completa:</strong> peça para reescrever o HTML com <header>, <main>, <article> e <footer>.</li>
+            <li><strong>Mais notícias:</strong> peça ideias de posts curtos com espaço para imagem.</li>
+            <li><strong>Modelo completo:</strong> peça um layout responsivo com topo, menu, sidebar e rodapé.</li>
+          </ul>
+          <p>Dica extra: se você usa GitHub Codespaces, basta substituir o conteúdo do seu arquivo index.html e abrir o Live Server para ver as mudanças instantaneamente.</p>
+        </article>
 
-    <p>
-        A inteligência artificial continua sendo um dos assuntos mais comentados do momento.
-        Empresas e escolas estão adotando novas ferramentas para facilitar tarefas,
-        aumentar a produtividade e apoiar o aprendizado.
-    </p>
+        <div class="post-grid">
+          <article class="post-card">
+            <img class="thumb" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='320'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1' y1='0' y2='1'%3E%3Cstop stop-color='%237c9cff'/%3E%3Cstop offset='1' stop-color='%23a66cff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='600' height='320' rx='28' fill='url(%23g)'/%3E%3Ccircle cx='440' cy='90' r='80' fill='rgba(255,255,255,0.18)'/%3E%3Ccircle cx='170' cy='250' r='110' fill='rgba(5,10,18,0.18)'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='32' fill='white'%3EIA em Destaque%3C/text%3E%3C/svg%3E" alt="Ilustração de inteligência artificial" />
+            <h3>Inteligência Artificial em Destaque</h3>
+            <p class="meta">Por Isadora • 15 de junho de 2026</p>
+            <p>A IA continua transformando a rotina de empresas, escolas e criadores com ferramentas mais rápidas, inteligentes e acessíveis.</p>
+            <a class="read-more" href="#contato">Leia mais →</a>
+          </article>
 
+          <article class="post-card">
+            <img class="thumb" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='320'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1' y1='0' y2='1'%3E%3Cstop stop-color='%23101c2d'/%3E%3Cstop offset='1' stop-color='%232a3d5d'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='600' height='320' rx='28' fill='url(%23g)'/%3E%3Cpath d='M110 220 L260 110 L380 180 L500 80' fill='none' stroke='rgba(124,156,255,0.9)' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='260' cy='110' r='14' fill='%23dce7ff'/%3E%3Ccircle cx='380' cy='180' r='14' fill='%23dce7ff'/%3E%3Ccircle cx='500' cy='80' r='14' fill='%23dce7ff'/%3E%3Ctext x='50%25' y='285' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='28' fill='white'%3ETransformação Digital%3C/text%3E%3C/svg%3E" alt="Ilustração de dados e tecnologia" />
+            <h3>Novas Ferramentas de IA para Estudantes</h3>
+            <p class="meta">Por Isadora • 14 de junho de 2026</p>
+            <p>Aplicativos de escrita, pesquisa e organização ajudam estudantes a estudar com mais foco, clareza e personalização.</p>
+            <a class="read-more" href="#contato">Leia mais →</a>
+          </article>
+
+          <article class="post-card">
+            <img class="thumb" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='320'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1' y1='0' y2='1'%3E%3Cstop stop-color='%23242f47'/%3E%3Cstop offset='1' stop-color='%234b5f8a'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='600' height='320' rx='28' fill='url(%23g)'/%3E%3Crect x='120' y='70' width='360' height='180' rx='24' fill='rgba(255,255,255,0.08)' stroke='rgba(255,255,255,0.2)'/%3E%3Cpath d='M180 190 L250 130 L320 170 L420 95' fill='none' stroke='%23dce7ff' stroke-width='7'/%3E%3Ctext x='50%25' y='285' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='28' fill='white'%3ECibersegurança em Foco%3C/text%3E%3C/svg%3E" alt="Ilustração de segurança digital" />
+            <h3>Cibersegurança em Foco</h3>
+            <p class="meta">Por Isadora • 13 de junho de 2026</p>
+            <p>Com o crescimento da conectividade, proteger senhas, dados e dispositivos se tornou essencial para todos os perfis de usuário.</p>
+            <a class="read-more" href="#contato">Leia mais →</a>
+          </article>
+        </div>
+      </section>
+
+      <aside class="sidebar">
+        <article class="sidebar-card" id="contato">
+          <h2>Sobre mim</h2>
+          <p>Sou apaixonada por tecnologia, educação digital e conteúdos que ajudam outras pessoas a entenderem o futuro com mais clareza.</p>
+        </article>
+
+        <article class="sidebar-card">
+          <h2>Leia também</h2>
+          <ul>
+            <li>Como a IA está mudando a educação</li>
+            <li>Robótica acessível para iniciantes</li>
+            <li>Tendências em desenvolvimento web</li>
+          </ul>
+        </article>
+
+        <article class="sidebar-card">
+          <h2>Mensagem do dia</h2>
+          <p>“A inovação cresce quando ideias boas ganham espaço para serem compartilhadas.”</p>
+        </article>
+      </aside>
+    </main>
+
+    <footer>
+      © 2026 Notícias da Isadora. Todos os direitos reservados.
+    </footer>
+  </div>
 </body>
 </html>
